@@ -13,8 +13,8 @@ b1=img(:,:,3);
 
 %image secret
 [namafile, direktori] = uigetfile('*.*','Pilih gambar cover');
-rgbimage1=imread(num2str(namafile));
-subplot(232),imshow(rgbimage1),title('Gambar cover');
+rgbimage2=imread(num2str(namafile));
+subplot(232),imshow(rgbimage2),title('Gambar cover');
 [i_LL,i_LH, i_HL, i_HH]=dwt2(rgbimage2,'haar');
 img=i_LL;
 r2=img(:,:,1);
@@ -29,9 +29,9 @@ b2=img(:,:,3);
 %biner = dec2bin(charteks,8);
 
 %stego dwt
-S_wimgr=S_imgr1+(0.1*S_imgr2);
-S_wimgg=S_imgg1+(0.1*S_imgg2);
-S_wimgb=S_imgb1+(0.1*S_imgb2);
+S_wimgr=S_imgr1+(1/10*S_imgr2);
+S_wimgg=S_imgg1+(1/10*S_imgg2);
+S_wimgb=S_imgb1+(1/10*S_imgb2);
 
 wimgr=U_imgr1*S_wimgr*V_imgr1';
 wimgg=U_imgg1*S_wimgg*V_imgg1';
@@ -46,7 +46,7 @@ subplot(233),imshow(uint8(rgb2)),title('Gambar hasil stego');
 %extract image
 rgbimage=rgb2;
 [w_LL,w_LH,w_HL,w_HH]=dwt2(rgbimage,'haar');
-img_w=wm_LL;
+img_w=w_LL;
 r3=img_w(:,:,1);
 g3=img_w(:,:,2);
 b3=img_w(:,:,3);
@@ -69,3 +69,6 @@ newstegano_LL=ewat;
 rgb2=idwt2(newstegano_LL,w_LH,w_HL,w_HH,'haar');
 
 subplot(234),imshow(uint8(rgb2)),title('Gambar hasil extract');
+
+[namafile,direktori]=uiputfile({'*.bmp';'.png'},'Simpan Gambar');
+imwrite(uint8(rgb2), namafile);
