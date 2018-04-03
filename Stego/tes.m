@@ -29,9 +29,9 @@ b2=img(:,:,3);
 %biner = dec2bin(charteks,8);
 
 %stego dwt
-S_wimgr=S_imgr1+(1/10*S_imgr2);
-S_wimgg=S_imgg1+(1/10*S_imgg2);
-S_wimgb=S_imgb1+(1/10*S_imgb2);
+S_wimgr=S_imgr1+(0.1*S_imgr2);
+S_wimgg=S_imgg1+(0.1*S_imgg2);
+S_wimgb=S_imgb1+(0.1*S_imgb2);
 
 wimgr=U_imgr1*S_wimgr*V_imgr1';
 wimgg=U_imgg1*S_wimgg*V_imgg1';
