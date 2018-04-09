@@ -1,35 +1,35 @@
-function varargout = stego(varargin)
-% STEGO MATLAB code for stego.fig
-%      STEGO, by itself, creates a new STEGO or raises the existing
+function varargout = guiDWT(varargin)
+% GUIDWT MATLAB code for guiDWT.fig
+%      GUIDWT, by itself, creates a new GUIDWT or raises the existing
 %      singleton*.
 %
-%      H = STEGO returns the handle to a new STEGO or the handle to
+%      H = GUIDWT returns the handle to a new GUIDWT or the handle to
 %      the existing singleton*.
 %
-%      STEGO('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in STEGO.M with the given input arguments.
+%      GUIDWT('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in GUIDWT.M with the given input arguments.
 %
-%      STEGO('Property','Value',...) creates a new STEGO or raises the
+%      GUIDWT('Property','Value',...) creates a new GUIDWT or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before stego_OpeningFcn gets called.  An
+%      applied to the GUI before guiDWT_OpeningFcn gets called.  An
 %      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to stego_OpeningFcn via varargin.
+%      stop.  All inputs are passed to guiDWT_OpeningFcn via varargin.
 %
 %      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
 %      instance to run (singleton)".
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help stego
+% Edit the above text to modify the response to help guiDWT
 
-% Last Modified by GUIDE v2.5 07-Apr-2018 20:26:17
+% Last Modified by GUIDE v2.5 08-Apr-2018 15:50:34
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @stego_OpeningFcn, ...
-                   'gui_OutputFcn',  @stego_OutputFcn, ...
+                   'gui_OpeningFcn', @guiDWT_OpeningFcn, ...
+                   'gui_OutputFcn',  @guiDWT_OutputFcn, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
@@ -44,26 +44,26 @@ end
 % End initialization code - DO NOT EDIT
 
 
-% --- Executes just before stego is made visible.
-function stego_OpeningFcn(hObject, eventdata, handles, varargin)
+% --- Executes just before guiDWT is made visible.
+function guiDWT_OpeningFcn(hObject, eventdata, handles, varargin)
 % This function has no output args, see OutputFcn.
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to stego (see VARARGIN)
+% varargin   command line arguments to guiDWT (see VARARGIN)
 
-% Choose default command line output for stego
+% Choose default command line output for guiDWT
 handles.output = hObject;
 
 % Update handles structure
 guidata(hObject, handles);
 
-% UIWAIT makes stego wait for user response (see UIRESUME)
-% uiwait(handles.stego);
+% UIWAIT makes guiDWT wait for user response (see UIRESUME)
+% uiwait(handles.guiDWT);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = stego_OutputFcn(hObject, eventdata, handles) 
+function varargout = guiDWT_OutputFcn(hObject, eventdata, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -186,11 +186,10 @@ function saveImg_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 proyek = guidata(gcbo);
-%try
+
 [namafile,direktori]=uiputfile({'*.bmp';'*.png'},'Simpan Gambar');
 gbr2=get(proyek.resultImg,'Userdata');
 imwrite(uint8(gbr2), namafile);
-
 msgbox('Gambar berhasil disimpan','Simpan Gambar');
 %catch
 %end
@@ -217,40 +216,42 @@ function stegano_Callback(hObject, eventdata, handles)
 proyek = guidata(gcbo);
 img = get(proyek.coverImg,'Userdata');
 namafile = get(proyek.namafiletxt,'Userdata');
-switch get(proyek.popupmenu1,'Value');
- 
-        try
-        gbr2=stegolsb(img,namafile);
+
+        %try
+        [gbr2,gbrstg]=stegodwt(img,namafile);
+        
         set(proyek.stego,'CurrentAxes',proyek.resultImg);
-        set(imshow(gbr2));
-        set(proyek.resultImg,'Userdata',gbr2);
+        set(imshow(uint8(gbrstg)));
+        set(proyek.resultImg,'Userdata',uint8(gbrstg));
+        textbin = ExtractLsb(uint8(gbr2));
+        set(proyek.textResult,'String',textbin);
+        set(proyek.textResult,'Userdata',textbin);
+
+        %[namafile,direktori]=uiputfile('*.txt','Simpan teks');
+        %teks = fopen(namafile,'w');
+        %pesan = get(proyek.textResult,'Userdata');
+        %fprintf(teks,pesan);
+        %fclose(teks);
+        disp(textbin);
         msgbox('Gambar berhasil distego','Stego');
-        catch
+        %catch
         msgbox('Gambar gagal di stego','Stego');    
-        end
-end
+        %end
+        
 
-
-% --- Executes on button press in saveImg.
-function saveImg_Callback(hObject, eventdata, handles)
-% hObject    handle to saveImg (see GCBO)
+% --- Executes on selection change in textResult.
+function textResult_Callback(hObject, eventdata, handles)
+% hObject    handle to textResult (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-
-% --- Executes on selection change in listbox4.
-function listbox4_Callback(hObject, eventdata, handles)
-% hObject    handle to listbox4 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: contents = cellstr(get(hObject,'String')) returns listbox4 contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from listbox4
+% Hints: contents = cellstr(get(hObject,'String')) returns textResult contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from textResult
 
 
 % --- Executes during object creation, after setting all properties.
-function listbox4_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to listbox4 (see GCBO)
+function textResult_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to textResult (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 

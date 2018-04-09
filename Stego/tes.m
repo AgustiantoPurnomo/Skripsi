@@ -12,7 +12,7 @@ b1=img(:,:,3);
 [U_imgb1,S_imgb1,V_imgb1]=svd(b1);
 
 %image secret
-[namafile, direktori] = uigetfile('*.*','Pilih gambar cover');
+[namafile, direktori] = uigetfile('*.*','Pilih gambar rahasia');
 rgbimage2=imread(num2str(namafile));
 subplot(232),imshow(rgbimage2),title('Gambar cover');
 [i_LL,i_LH, i_HL, i_HH]=dwt2(rgbimage2,'haar');
@@ -40,10 +40,11 @@ wimgb=U_imgb1*S_wimgb*V_imgb1';
 wimg=cat(3,wimgr,wimgg,wimgb);
 newhost_LL=wimg;
 rgb2=idwt2(newhost_LL,i_LH,i_HL,i_HH,'haar');
-
+xlswrite('kintil1',r1);
 subplot(233),imshow(uint8(rgb2)),title('Gambar hasil stego');
 
 %extract image
+
 rgbimage=rgb2;
 [w_LL,w_LH,w_HL,w_HH]=dwt2(rgbimage,'haar');
 img_w=w_LL;
@@ -54,13 +55,29 @@ b3=img_w(:,:,3);
 [U_imgg3,S_imgg3,V_imgg3]=svd(g3);
 [U_imgb3,S_imgb3,V_imgb3]=svd(b3);
 
+%U_ewatr=(U_imgr3-U_imgr1)/0.1;
+%U_ewatg=(U_imgg3-U_imgg1)/0.1;
+%U_ewatb=(U_imgb3-U_imgb1)/0.1;
+
 S_ewatr=(S_imgr3-S_imgr1)/0.1;
 S_ewatg=(S_imgg3-S_imgg1)/0.1;
 S_ewatb=(S_imgb3-S_imgb1)/0.1;
 
+%V_ewatr=(V_imgr3-V_imgr1)/0.1;
+%V_ewatg=(V_imgg3-V_imgg1)/0.1;
+%V_ewatb=(V_imgb3-V_imgb1)/0.1;
+
 ewatr=U_imgr2*S_ewatr*V_imgr2';
 ewatg=U_imgg2*S_ewatg*V_imgg2';
 ewatb=U_imgb2*S_ewatb*V_imgb2';
+
+%ewatr=U_ewatr*S_ewatr*V_ewatr';
+%ewatg=U_ewatg*S_ewatg*V_ewatg';
+%ewatb=U_ewatb*S_ewatb*V_ewatb';
+
+%ewatr=U_imgr2*S_imgr2*V_imgr2';
+%ewatg=U_imgg2*S_imgg2*V_imgg2';
+%ewatb=U_imgb2*S_imgb2*V_imgb2';
 
 ewat=cat(3,ewatr,ewatg,ewatb);
 

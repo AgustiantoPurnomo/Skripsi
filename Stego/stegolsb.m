@@ -18,6 +18,7 @@ else
     fprintf('\nImage File Size  %d\n',size1);
     fprintf('Text  File Size  %d\n',size2);
     disp('Text File is Small');
+    
     i=1;j=1;k=1;
         while k<=size2
         a=F(k);

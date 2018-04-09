@@ -121,6 +121,13 @@ img = get(proyek.resultImg,'Userdata');
 
 switch get(proyek.popupmenu1,'Value');
     case 1
+        try
+        textbin = ExtractDwt(img);
+        set(proyek.textlist,'String',textbin);
+        set(proyek.textlist,'Userdata',textbin);
+        catch
+            msgbox('Pesan gagal di ekstrak Lsb','Ekstrak'); 
+        end 
     case 2
         try
         textbin = ExtractLsb(img);

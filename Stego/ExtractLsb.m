@@ -1,8 +1,9 @@
 function textbin=ExtractLsb(gbr)
  target=gbr;
         n=size(target);
-        txtsz=target(n(1),n(2),1);% Text Size
-        width=target(n(1),n(2),2);% Image's Width   
+        disp(n);
+        txtsz=target(n(1),n(2),1); % Text Size
+        width=target(n(1),n(2),2); % Image's Width   
         disp(txtsz);
         disp(width);
         i=1;j=1;k=1;
