@@ -217,10 +217,10 @@ proyek = guidata(gcbo);
 img = get(proyek.coverImg,'Userdata');
 namafile = get(proyek.namafiletxt,'Userdata');
 
-        %try
-        [gbr2,gbrstg]=stegodwt(img,namafile);
+try
+[gbr2,gbrstg]=stegodwt(img,namafile);
         
-        set(proyek.stego,'CurrentAxes',proyek.resultImg);
+set(proyek.stego,'CurrentAxes',proyek.resultImg);
         set(imshow(uint8(gbrstg)));
         set(proyek.resultImg,'Userdata',uint8(gbrstg));
         textbin = ExtractLsb(uint8(gbr2));
@@ -234,9 +234,9 @@ namafile = get(proyek.namafiletxt,'Userdata');
         %fclose(teks);
         disp(textbin);
         msgbox('Gambar berhasil distego','Stego');
-        %catch
+        catch
         msgbox('Gambar gagal di stego','Stego');    
-        %end
+        end
         
 
 % --- Executes on selection change in textResult.

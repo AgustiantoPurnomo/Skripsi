@@ -22,7 +22,7 @@ function varargout = stego(varargin)
 
 % Edit the above text to modify the response to help stego
 
-% Last Modified by GUIDE v2.5 07-Apr-2018 20:26:17
+% Last Modified by GUIDE v2.5 10-Apr-2018 11:27:08
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -217,40 +217,33 @@ function stegano_Callback(hObject, eventdata, handles)
 proyek = guidata(gcbo);
 img = get(proyek.coverImg,'Userdata');
 namafile = get(proyek.namafiletxt,'Userdata');
-switch get(proyek.popupmenu1,'Value');
- 
-        try
-        gbr2=stegolsb(img,namafile);
-        set(proyek.stego,'CurrentAxes',proyek.resultImg);
-        set(imshow(gbr2));
-        set(proyek.resultImg,'Userdata',gbr2);
-        msgbox('Gambar berhasil distego','Stego');
-        catch
-        msgbox('Gambar gagal di stego','Stego');    
-        end
+try
+gbr2=stegolsb(img,namafile);
+set(proyek.stego,'CurrentAxes',proyek.resultImg);
+set(imshow(gbr2));
+set(proyek.resultImg,'Userdata',gbr2);
+textbin = ExtractLsb(uint8(gbr2));
+set(proyek.textResult,'String',textbin);
+set(proyek.textResult,'Userdata',textbin);
+msgbox('Gambar berhasil distego','Stego');
+catch
+msgbox('Gambar gagal di stego','Stego');    
 end
 
 
-% --- Executes on button press in saveImg.
-function saveImg_Callback(hObject, eventdata, handles)
-% hObject    handle to saveImg (see GCBO)
+% --- Executes on selection change in textResult.
+function textResult_Callback(hObject, eventdata, handles)
+% hObject    handle to textResult (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-
-% --- Executes on selection change in listbox4.
-function listbox4_Callback(hObject, eventdata, handles)
-% hObject    handle to listbox4 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: contents = cellstr(get(hObject,'String')) returns listbox4 contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from listbox4
+% Hints: contents = cellstr(get(hObject,'String')) returns textResult contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from textResult
 
 
 % --- Executes during object creation, after setting all properties.
-function listbox4_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to listbox4 (see GCBO)
+function textResult_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to textResult (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
