@@ -82,11 +82,12 @@ proyek = guidata(gcbo);
 try
     [namafile,direktori]=uigetfile({'*.jpg';'*.bmp';'*.png'},'Open Image');
     image = imread(namafile);
-    global imgbit namaimg;
+    global imgbit namaimg extimg;
     imgbit = imfinfo(namafile);
     imgbit = imgbit.BitDepth;
     [folder, baseFileName, extension] = fileparts(namafile);
     namaimg = baseFileName;
+    extimg = extension;
     set(proyek.stego,'CurrentAxes',proyek.coverImg);
     set(imshow(image));
     set(proyek.coverImg,'Userdata',image);
@@ -155,7 +156,7 @@ function stegano_Callback(hObject, eventdata, handles)
 % hObject    handle to stegano (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-global imgbit namaimg namatxt;
+global imgbit namaimg namatxt extimg;
 
 if(imgbit == 24)
     bitdepth = 'int8';
@@ -171,10 +172,7 @@ switch get(proyek.metode,'Value');
         try
             gbrstg = stegoDWT2(img,namatxt,bitdepth);
             
-            catnama = strcat('dwt-',namaimg,'.png');
-            imwrite(gbrstg,catnama);
-            
-            catnama = strcat('dwt-',namaimg,'.bmp');
+            catnama = strcat('dwt-',namaimg,extimg);
             imwrite(gbrstg,catnama);
             
             msgbox('Gambar berhasil distego','Stego');
@@ -185,12 +183,9 @@ switch get(proyek.metode,'Value');
         try
             gbr2=stegolsb(img,namatxt);
             
-            catnama = strcat('lsb-',namaimg,'.png');
+            catnama = strcat('lsb-',namaimg,extimg);
             imwrite(gbr2,catnama);
-            
-            catnama = strcat('lsb-',namaimg,'.bmp');
-            imwrite(gbr2,catnama);
-            
+                        
             msgbox('Gambar berhasil distego','Stego');
         catch
             msgbox('Gambar gagal di stego','Stego');
