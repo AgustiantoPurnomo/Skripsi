@@ -22,16 +22,16 @@ function varargout = guiDWT(varargin)
 
 % Edit the above text to modify the response to help guiDWT
 
-% Last Modified by GUIDE v2.5 08-Apr-2018 15:50:34
+% Last Modified by GUIDE v2.5 11-Apr-2018 20:52:40
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
-                   'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @guiDWT_OpeningFcn, ...
-                   'gui_OutputFcn',  @guiDWT_OutputFcn, ...
-                   'gui_LayoutFcn',  [] , ...
-                   'gui_Callback',   []);
+    'gui_Singleton',  gui_Singleton, ...
+    'gui_OpeningFcn', @guiDWT_OpeningFcn, ...
+    'gui_OutputFcn',  @guiDWT_OutputFcn, ...
+    'gui_LayoutFcn',  [] , ...
+    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
     gui_State.gui_Callback = str2func(varargin{1});
 end
@@ -63,7 +63,7 @@ guidata(hObject, handles);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = guiDWT_OutputFcn(hObject, eventdata, handles) 
+function varargout = guiDWT_OutputFcn(hObject, eventdata, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -80,13 +80,18 @@ function openImg_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 proyek = guidata(gcbo);
 try
-[namafile,direktori]=uigetfile({'*.jpg';'*.bmp';'*.png'},'Open Image');
-image = imread(namafile);
-set(proyek.stego,'CurrentAxes',proyek.coverImg);
-set(imshow(image));
-set(proyek.coverImg,'Userdata',image);
-set(proyek.txtNamaFile,'String',namafile);
-set(proyek.txtNamaFile,'Userdata',namafile);
+    [namafile,direktori]=uigetfile({'*.jpg';'*.bmp';'*.png'},'Open Image');
+    image = imread(namafile);
+    global imgbit namaimg;
+    imgbit = imfinfo(namafile);
+    imgbit = imgbit.BitDepth;
+    [folder, baseFileName, extension] = fileparts(namafile);
+    namaimg = baseFileName;
+    set(proyek.stego,'CurrentAxes',proyek.coverImg);
+    set(imshow(image));
+    set(proyek.coverImg,'Userdata',image);
+    set(proyek.txtNamaFile,'String',namafile);
+    set(proyek.txtNamaFile,'Userdata',namafile);
 catch
 end
 
@@ -96,41 +101,18 @@ function openTxt_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 proyek = guidata(gcbo);
+global namatxt;
 try
-[namafile,direktori]=uigetfile('*.txt','Open Text');
-teks = fopen(namafile,'r');
-set(proyek.stego,'Userdata',teks)
-charteks = fread(teks,'uint8=>char');
-fclose(teks);
-pesan = sprintf(charteks);
-set(proyek.namafiletxt,'String',namafile);
-set(proyek.namafiletxt,'Userdata',namafile);
-set(proyek.namafiletxt,'visible','on')
-set(proyek.textlist,'String',pesan);
-set(proyek.textlist,'Userdata',pesan);
+    [namafile,direktori]=uigetfile('*.txt','Open Text');
+    namatxt = namafile;
+    teks = fopen(namafile,'r');
+    set(proyek.stego,'Userdata',teks);
+    charteks = fread(teks,'uint8=>char');
+    fclose(teks);
+    pesan = sprintf(charteks);
+    set(proyek.textlist,'String',pesan);
+    set(proyek.textlist,'Userdata',pesan);
 catch
-end
-
-% --- Executes on selection change in popupmenu1.
-function popupmenu1_Callback(hObject, eventdata, handles)
-% hObject    handle to popupmenu1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu1 contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from popupmenu1
-
-
-% --- Executes during object creation, after setting all properties.
-function popupmenu1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to popupmenu1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: popupmenu controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
 end
 
 
@@ -156,17 +138,6 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
-
-
-function edit1_Callback(hObject, eventdata, handles)
-% hObject    handle to edit1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit1 as text
-%        str2double(get(hObject,'String')) returns contents of edit1 as a double
-
-
 % --- Executes during object creation, after setting all properties.
 function edit1_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to edit1 (see GCBO)
@@ -179,83 +150,69 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
-
-% --- Executes on button press in saveImg.
-function saveImg_Callback(hObject, eventdata, handles)
-% hObject    handle to saveImg (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-proyek = guidata(gcbo);
-
-[namafile,direktori]=uiputfile({'*.bmp';'*.png'},'Simpan Gambar');
-gbr2=get(proyek.resultImg,'Userdata');
-imwrite(uint8(gbr2), namafile);
-msgbox('Gambar berhasil disimpan','Simpan Gambar');
-%catch
-%end
-
-% --- Executes on button press in saveTxt.
-function saveTxt_Callback(hObject, eventdata, handles)
-% hObject    handle to saveImg (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-proyek = guidata(gcbo);
-%try
-[namafile,direktori]=uiputfile('*.txt','Simpan teks');
-teks = fopen(namafile,'w');
-pesan = get(proyek.textlist,'Userdata');
-fprintf(teks,pesan);
-fclose(teks);
-msgbox('Pesan berhasil disimpan','Simpan teks');
-
 % --- Executes on button press in stegano.
 function stegano_Callback(hObject, eventdata, handles)
 % hObject    handle to stegano (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+global imgbit namaimg namatxt;
+
+if(imgbit == 24)
+    bitdepth = 'int8';
+else
+    bitdepth = 'int16';
+end
+
 proyek = guidata(gcbo);
 img = get(proyek.coverImg,'Userdata');
-namafile = get(proyek.namafiletxt,'Userdata');
 
-        %try
-        [gbr2,gbrstg]=stegodwt(img,namafile);
-        
-        set(proyek.stego,'CurrentAxes',proyek.resultImg);
-        set(imshow(uint8(gbrstg)));
-        set(proyek.resultImg,'Userdata',uint8(gbrstg));
-        textbin = ExtractLsb(uint8(gbr2));
-        set(proyek.textResult,'String',textbin);
-        set(proyek.textResult,'Userdata',textbin);
-
-        %[namafile,direktori]=uiputfile('*.txt','Simpan teks');
-        %teks = fopen(namafile,'w');
-        %pesan = get(proyek.textResult,'Userdata');
-        %fprintf(teks,pesan);
-        %fclose(teks);
-        disp(textbin);
-        msgbox('Gambar berhasil distego','Stego');
-        %catch
-        msgbox('Gambar gagal di stego','Stego');    
-        %end
-        
-
-% --- Executes on selection change in textResult.
-function textResult_Callback(hObject, eventdata, handles)
-% hObject    handle to textResult (see GCBO)
+switch get(proyek.metode,'Value');
+    case 1
+        try
+            gbrstg = stegoDWT2(img,namatxt,bitdepth);
+            
+            catnama = strcat('dwt-',namaimg,'.png');
+            imwrite(gbrstg,catnama);
+            
+            catnama = strcat('dwt-',namaimg,'.bmp');
+            imwrite(gbrstg,catnama);
+            
+            msgbox('Gambar berhasil distego','Stego');
+        catch
+            msgbox('Gambar gagal di stego','Stego');
+        end
+    case 2
+        try
+            gbr2=stegolsb(img,namatxt);
+            
+            catnama = strcat('lsb-',namaimg,'.png');
+            imwrite(gbr2,catnama);
+            
+            catnama = strcat('lsb-',namaimg,'.bmp');
+            imwrite(gbr2,catnama);
+            
+            msgbox('Gambar berhasil distego','Stego');
+        catch
+            msgbox('Gambar gagal di stego','Stego');
+        end
+end
+% --- Executes on selection change in metode.
+function metode_Callback(hObject, eventdata, handles)
+% hObject    handle to metode (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: contents = cellstr(get(hObject,'String')) returns textResult contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from textResult
+% Hints: contents = cellstr(get(hObject,'String')) returns metode contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from metode
 
 
 % --- Executes during object creation, after setting all properties.
-function textResult_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to textResult (see GCBO)
+function metode_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to metode (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
-% Hint: listbox controls usually have a white background on Windows.
+% Hint: popupmenu controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
