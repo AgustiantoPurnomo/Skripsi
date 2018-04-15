@@ -22,7 +22,7 @@ function varargout = stego(varargin)
 
 % Edit the above text to modify the response to help stego
 
-% Last Modified by GUIDE v2.5 07-Apr-2018 20:26:17
+% Last Modified by GUIDE v2.5 10-Apr-2018 11:27:08
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -235,13 +235,9 @@ function listbox4_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: contents = cellstr(get(hObject,'String')) returns listbox4 contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from listbox4
-
-
 % --- Executes during object creation, after setting all properties.
-function listbox4_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to listbox4 (see GCBO)
+function textResult_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to textResult (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
