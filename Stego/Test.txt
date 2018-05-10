@@ -1,1 +1,0 @@
-Steganografi menggunakan metode LSB

@@ -81,7 +81,7 @@ function openImg_Callback(hObject, eventdata, handles)
 global imgbit namaimg namatxt;
 proyek = guidata(gcbo);
 try
-    [namafile,direktori]=uigetfile({'*.jpg';'*.bmp';'*.png'},'Open Image');
+    [namafile,direktori]=uigetfile({'*.bmp';'*.png'},'Open Image');
     image = imread(namafile);
     imgbit = imfinfo(namafile);
     imgbit = imgbit.BitDepth;
@@ -114,6 +114,12 @@ switch get(proyek.metode,'Value');
             set(proyek.textlist,'Value',1);
             set(proyek.textlist,'String',textbin);
             set(proyek.textlist,'Userdata',textbin);
+            
+            catnama = strcat('extract',namaimg,'.txt');
+            teks = fopen(catnama,'w');
+            pesan = get(proyek.textlist,'Userdata');
+            fprintf(teks,pesan);
+            fclose(teks);
         catch
             msgbox('Pesan gagal diekstrak dengan DWT','Ekstrak');
         end
@@ -123,6 +129,12 @@ switch get(proyek.metode,'Value');
             set(proyek.textlist,'Value',1);
             set(proyek.textlist,'String',textbin);
             set(proyek.textlist,'Userdata',textbin);
+            
+            catnama = strcat('extract',namaimg,'.txt');
+            teks = fopen(catnama,'w');
+            pesan = get(proyek.textlist,'Userdata');
+            fprintf(teks,pesan);
+            fclose(teks);
         catch
             msgbox('Pesan gagal di ekstrak Lsb','Ekstrak');
         end
