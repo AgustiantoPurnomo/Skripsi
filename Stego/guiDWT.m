@@ -81,11 +81,12 @@ function openImg_Callback(hObject, eventdata, handles)
 proyek = guidata(gcbo);
 try
     [namafile,direktori]=uigetfile({'*.bmp';'*.png'},'Open Image');
-    image = imread(namafile);
+    [folder, baseFileName, extension] = fileparts(strcat(direktori,namafile));
+    fullpath = strcat(direktori,namafile);
+    image = imread(fullpath);
     global imgbit namaimg extimg;
-    imgbit = imfinfo(namafile);
+    imgbit = imfinfo(strcat(direktori,namafile));
     imgbit = imgbit.BitDepth;
-    [folder, baseFileName, extension] = fileparts(namafile);
     namaimg = baseFileName;
     extimg = extension;
     set(proyek.stego,'CurrentAxes',proyek.coverImg);
@@ -105,8 +106,8 @@ proyek = guidata(gcbo);
 global namatxt;
 try
     [namafile,direktori]=uigetfile('*.txt','Open Text');
-    namatxt = namafile;
-    teks = fopen(namafile,'r');
+    namatxt = strcat(direktori,namafile);
+    teks = fopen(strcat(direktori,namafile),'r');
     set(proyek.stego,'Userdata',teks);
     charteks = fread(teks,'uint8=>char');
     fclose(teks);
