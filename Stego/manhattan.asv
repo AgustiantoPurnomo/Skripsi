@@ -1,0 +1,21 @@
+[namafile,direktori]=uigetfile({'*.bmp';'*.png'},'Open Image');
+fullpath = strcat(direktori,namafile);
+image = imread(fullpath);
+
+[namafile,direktori]=uigetfile({'*.bmp';'*.png'},'Open Image');
+fullpath = strcat(direktori,namafile);
+image2 = imread(fullpath);
+
+imgsz = size(image);
+h = imgsz(1);
+w = imgsz(2);
+distance = 0;
+imgr1 = image(:,:,1);
+imgr2 = image2(:,:,1);
+for y=1:h
+    for x=1:w
+        pixel1 = imgr1(y,x);
+        distance = distance + pixel1 - imgr1(y,x) ;
+    end
+end
+test = 0;
