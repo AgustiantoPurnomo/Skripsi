@@ -1,21 +1,26 @@
+selpath1 = uigetdir;
+selpath2 = uigetdir;
+
 [namafile,direktori]=uigetfile({'*.bmp';'*.png'},'Open Image');
 fullpath = strcat(direktori,namafile);
 image = imread(fullpath);
 
-[namafile,direktori]=uigetfile({'*.bmp';'*.png'},'Open Image');
-fullpath = strcat(direktori,namafile);
-image2 = imread(fullpath);
+[namafile2,direktori2]=uigetfile({'*.bmp';'*.png'},'Open Image');
+fullpath2 = strcat(direktori2,namafile2);
+image2 = imread(fullpath2);
 
 imgsz = size(image);
 h = imgsz(1);
 w = imgsz(2);
-distance = 0;
-imgr1 = image(:,:,1);
-imgr2 = image2(:,:,1);
-for y=1:h
-    for x=1:w
-        pixel1 = imgr1(y,x);
-        distance = distance + pixel1 - imgr1(y,x) ;
+%distance = 1111111;
+for i=1:3
+    for y=1:h
+        for x=1:w
+            p1 = double(image(y,x,i));
+            p2 = double(image2(y,x,i));
+            distance = double(distance + abs( p1 - p2 ));
+        end
     end
 end
-test = 0;
+
+%c = sum(sum(distance));

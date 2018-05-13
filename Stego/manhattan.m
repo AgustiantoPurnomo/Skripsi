@@ -9,15 +9,15 @@ image2 = imread(fullpath2);
 imgsz = size(image);
 h = imgsz(1);
 w = imgsz(2);
-imgr1 = image(:,:,1);
-imgr2 = image2(:,:,1);
-distance = zeros(h,w);
-for y=1:h
-    for x=1:w
-        p1 = imgr1(y,x);
-        p2 = imgr2(y,x);
-        distance(y,x) = abs( p1 - p2 );
+%distance = 1111111;
+for i=1:3
+    for y=1:h
+        for x=1:w
+            p1 = double(image(y,x,i));
+            p2 = double(image2(y,x,i));
+            distance = double(distance + abs( p1 - p2 ));
+        end
     end
 end
 
-c = sum(sum(distance));
+%c = sum(sum(distance));
