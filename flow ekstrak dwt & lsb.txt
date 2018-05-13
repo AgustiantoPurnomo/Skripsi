@@ -1,0 +1,10 @@
+extract dwt
+-hitung panjang teks yang didapat dari nilai pixel terakhir
+-LWT2
+-ambil nilai bit pixel sebanyak panjang teks dari filter LH
+-nilai setiap pixel dikonversi menjadi karakter teks
+
+extract lsb
+-hitung panjang teks yang didapat dari nilai pixel terakhir
+-ambil nilai 3 bit terakhir pada array r & g, 2 bit terakhir pada b, sebanyak panjang teks
+-nilai bit dari array rgb dikonversi menjadi karakter teks

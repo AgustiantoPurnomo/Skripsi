@@ -81,7 +81,7 @@ function openImg_Callback(hObject, eventdata, handles)
 global imgbit namaimg namatxt;
 proyek = guidata(gcbo);
 try
-    [namafile,direktori]=uigetfile({'*.bmp';'*.png'},'Open Image');
+    [namafile,direktori]=uigetfile({'*.png'},'Open Image');
     image = imread(namafile);
     imgbit = imfinfo(namafile);
     imgbit = imgbit.BitDepth;

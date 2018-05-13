@@ -1,4 +1,3 @@
-
 function [red,green,blue] = hidetext(redc,greenc,bluec,text)
 red=bitand(redc,248);
 green=bitand(greenc,248);

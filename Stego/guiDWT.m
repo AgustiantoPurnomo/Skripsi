@@ -170,16 +170,16 @@ img = get(proyek.coverImg,'Userdata');
 
 switch get(proyek.metode,'Value');
     case 1
-        %try
+        try
             gbrstg = stegoDWT2(img,namatxt,bitdepth);
             
             catnama = strcat('dwt-',namaimg,extimg);
             imwrite(gbrstg,catnama);
             
             msgbox('Gambar berhasil distego','Stego');
-        %catch
+        catch
             msgbox('Gambar gagal di stego','Stego');
-        %end
+        end
     case 2
         try
             gbr2=stegolsb(img,namatxt);
