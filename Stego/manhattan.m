@@ -10,12 +10,13 @@ imgsz = size(image);
 h = imgsz(1);
 w = imgsz(2);
 %distance = 1111111;
+manhatt = 0;
 for i=1:3
     for y=1:h
         for x=1:w
             p1 = double(image(y,x,i));
             p2 = double(image2(y,x,i));
-            distance = double(distance + abs( p1 - p2 ));
+            manhatt = manhatt + abs( p1 - p2 );
         end
     end
 end

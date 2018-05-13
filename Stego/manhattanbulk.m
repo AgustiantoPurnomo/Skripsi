@@ -8,7 +8,7 @@ w = imgsz(2);
 for gbr=1:20
     path1 = strcat(selpath1,'\',int2str(gbr),'.bmp');
     image = imread(path1);
-    path2 = strcat(selpath2,'\dwt-',int2str(gbr),'.bmp');
+    path2 = strcat(selpath2,'\lsb-',int2str(gbr),'.bmp');
     image2 = imread(path2);
     imgsz = size(image);
     h = imgsz(1);
@@ -23,7 +23,7 @@ for gbr=1:20
             end
         end
     end
-    dist(gbr) = a;
+    dist(gbr) = a; 
 end
 
 %c = sum(sum(distance));
